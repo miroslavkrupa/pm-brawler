@@ -27,19 +27,20 @@ namespace PMBrawler
             basePos = transform.position;
         }
 
+        const float ViewHeight = 9.5f; // world units visible vertically (characters are ~1.8 tall)
+
         /// <summary>
-        /// Pick a zoom where every art pixel covers a whole number of screen pixels, so the dithering
-        /// stays crisp. Falls back to the design zoom on small windows.
+        /// Pick a zoom close to <see cref="ViewHeight"/> where every art pixel covers a whole number of
+        /// screen pixels, so the dithering stays crisp. Falls back to the exact zoom on small windows.
         /// </summary>
         void UpdateZoom()
         {
             screenHeight = Screen.height;
-            const float designHeight = 13f * Art.PPU; // 13 units visible
-            int scale = Mathf.Max(1, Mathf.RoundToInt(screenHeight / designHeight));
+            int scale = Mathf.Max(1, Mathf.RoundToInt(screenHeight / (ViewHeight * Art.PPU)));
             float size = screenHeight / (2f * Art.PPU * scale);
-            if (size > 8f || size < 5f)
+            if (size > ViewHeight * 0.65f || size < ViewHeight * 0.4f)
             {
-                size = 6.5f;
+                size = ViewHeight / 2f;
                 pixel = 0f;
             }
             else pixel = 1f / (Art.PPU * scale);
@@ -54,7 +55,7 @@ namespace PMBrawler
             float halfW = cam.orthographicSize * cam.aspect;
             minX = halfW - 0.5f;
             maxX = Mathf.Max(minX, levelWidth - halfW - 0.5f);
-            minY = levelBottom + cam.orthographicSize - 1f;
+            minY = levelBottom + cam.orthographicSize + 0.5f; // a little foundation under the floor, not a wall of bricks
         }
 
         public void SnapTo(Vector2 p)

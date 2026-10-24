@@ -52,7 +52,7 @@ The exit stays locked until every blocker in the level is defeated ("awaiting si
 
 - `Assets/Scripts/Core` — `GameManager` (state machine, HUD, level loading), `Loc` (CZ/EN texts),
   `GameInput` (works with both input systems), `Art` (loads sprites, character sheets, text), `Fx`,
-  `CameraFollow` (pixel-perfect zoom), `Parallax`
+  `CameraFollow` (pixel-perfect zoom; `ViewHeight` sets how much of the level is visible), `Parallax`
 - `Assets/Scripts/Combat` — `Fighter` (shared physics/hit logic), `Health`, `Projectile`
 - `Assets/Scripts/Player/PlayerController.cs`
 - `Assets/Scripts/Enemies` — `Enemy` base class plus one file per enemy type
