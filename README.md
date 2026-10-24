@@ -30,6 +30,10 @@ characters and HUD from code, using the pixel art in `Assets/Resources/Art`.
 | Language CZ/EN | Tab |
 | Fullscreen on/off | F |
 
+On phones and tablets (landscape) the game shows touch buttons instead: a d-pad on the left, jump, hit,
+Gantt slam and "take this offline" (the coffee) on the right, and pause / fullscreen / language at the top.
+Tap anywhere to get through menus. `TouchControls.cs` draws them and feeds `GameInput`.
+
 ## The cast
 
 | Enemy | Gimmick |
