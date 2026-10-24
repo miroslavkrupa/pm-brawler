@@ -1,0 +1,256 @@
+{
+ "style": "hd",
+ "ppu": 128,
+ "wallPpu": 96,
+ "farPpu": 48,
+ "viewHeight": 7.0,
+ "pixelPerfect": false,
+ "propScale": 1.2,
+ "wallPropY": 5.4,
+ "curtainTop": 7.95,
+ "curtainX": 1.45,
+ "font": "Kalam-Bold",
+ "characters": [
+  {
+   "name": "pm",
+   "cellW": 312,
+   "cellH": 354,
+   "feet": 13,
+   "columns": 6,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "developer",
+   "cellW": 306,
+   "cellH": 347,
+   "feet": 13,
+   "columns": 6,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "tester",
+   "cellW": 292,
+   "cellH": 332,
+   "feet": 12,
+   "columns": 6,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "stakeholder",
+   "cellW": 319,
+   "cellH": 362,
+   "feet": 13,
+   "columns": 6,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "cfo",
+   "cellW": 306,
+   "cellH": 347,
+   "feet": 13,
+   "columns": 6,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "ceo",
+   "cellW": 392,
+   "cellH": 445,
+   "feet": 15,
+   "columns": 6,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "committee",
+   "cellW": 563,
+   "cellH": 422,
+   "feet": 6,
+   "columns": 3,
+   "frames": [
+    "idle0",
+    "idle1",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  }
+ ],
+ "levels": [
+  {
+   "key": "level1",
+   "floorProps": [
+    "desk_dev",
+    "server",
+    "plant",
+    "trash",
+    "desk_dev",
+    "cooler",
+    "chair"
+   ],
+   "wallProps": [
+    "kanban",
+    "poster_works",
+    "clock",
+    "burndown",
+    "kanban",
+    "calendar"
+   ],
+   "curtains": false,
+   "ceiling": "#d8d0bc"
+  },
+  {
+   "key": "level2",
+   "floorProps": [
+    "desk_qa",
+    "printer",
+    "cabinet",
+    "plant",
+    "desk_qa",
+    "trash",
+    "cooler"
+   ],
+   "wallProps": [
+    "bugboard",
+    "traffic",
+    "poster_bugs",
+    "calendar",
+    "bugboard",
+    "clock"
+   ],
+   "curtains": false,
+   "ceiling": "#e0d8c0"
+  },
+  {
+   "key": "level3",
+   "floorProps": [
+    "flipchart",
+    "chair",
+    "coffee",
+    "plant",
+    "flipchart",
+    "chair",
+    "trash"
+   ],
+   "wallProps": [
+    "whiteboard",
+    "stickies",
+    "projector",
+    "poster_scope",
+    "stickies",
+    "clock"
+   ],
+   "curtains": false,
+   "ceiling": "#ecdcc8"
+  },
+  {
+   "key": "level4",
+   "floorProps": [
+    "globe",
+    "binders",
+    "plant",
+    "binders"
+   ],
+   "wallProps": [
+    "gantt",
+    "rag",
+    "portrait",
+    "risk",
+    "portrait",
+    "clock"
+   ],
+   "curtains": true,
+   "ceiling": "#d0a848"
+  },
+  {
+   "key": "level5",
+   "floorProps": [
+    "trophy",
+    "aquarium",
+    "plant",
+    "golf",
+    "trophy"
+   ],
+   "wallProps": [
+    "kpi",
+    "portrait",
+    "orgchart",
+    "poster_synergy",
+    "portrait",
+    "clock"
+   ],
+   "curtains": true,
+   "ceiling": "#d8b448"
+  }
+ ]
+}

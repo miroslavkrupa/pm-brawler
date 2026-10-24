@@ -22,6 +22,7 @@ namespace PMBrawler
         public static bool PausePressed => KeyPausePressed || TouchControls.PausePressed;
         public static bool LanguagePressed => KeyLanguagePressed || TouchControls.LanguagePressed;
         public static bool FullscreenPressed => KeyFullscreenPressed || TouchControls.FullscreenPressed;
+        public static bool StylePressed => KeyStylePressed || TouchControls.StylePressed;
 
 #if ENABLE_INPUT_SYSTEM
         static Keyboard K => Keyboard.current;
@@ -48,6 +49,7 @@ namespace PMBrawler
         static bool KeyPausePressed => K != null && (K.escapeKey.wasPressedThisFrame || K.pKey.wasPressedThisFrame);
         static bool KeyLanguagePressed => K != null && K.tabKey.wasPressedThisFrame;
         static bool KeyFullscreenPressed => K != null && K.fKey.wasPressedThisFrame;
+        static bool KeyStylePressed => K != null && K.gKey.wasPressedThisFrame;
 #else
         static float KeyHorizontal
         {
@@ -70,6 +72,7 @@ namespace PMBrawler
         static bool KeyPausePressed => Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P);
         static bool KeyLanguagePressed => Input.GetKeyDown(KeyCode.Tab);
         static bool KeyFullscreenPressed => Input.GetKeyDown(KeyCode.F);
+        static bool KeyStylePressed => Input.GetKeyDown(KeyCode.G);
 #endif
     }
 }

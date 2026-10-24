@@ -62,6 +62,7 @@ namespace PMBrawler
         {
             if (GameInput.LanguagePressed) Loc.Toggle();
             if (GameInput.FullscreenPressed) Screen.fullScreen = !Screen.fullScreen;
+            if (GameInput.StylePressed) SwitchArtStyle();
             if (Loc.Current != lastLang)
             {
                 lastLang = Loc.Current;
@@ -147,11 +148,23 @@ namespace PMBrawler
             var cam = CameraFollow.Instance;
             cam.GetComponent<Camera>().backgroundColor = built.ceiling;
             cam.target = player.transform;
+            cam.UpdateZoom();
             cam.SetBounds(built.width, 0f);
             cam.SnapTo(player.transform.position);
 
             State = GameState.Intro;
             introTimer = 2.5f;
+        }
+
+        /// <summary>Flip between hand-drawn and pixel art; the current level restarts in the new style.</summary>
+        void SwitchArtStyle()
+        {
+            Art.ToggleStyle();
+            big = null; // HUD styles pick up the new font
+            var before = State;
+            Score = scoreAtLevelStart;
+            LoadLevel(LevelIndex);
+            if (before == GameState.Title) State = GameState.Title;
         }
 
         public int RemainingEnemies()
@@ -238,8 +251,9 @@ namespace PMBrawler
                     if (!TouchControls.Active)
                     {
                         // keyboard help; on touch screens the buttons speak for themselves
-                        Shadow(new Rect(40, H * 0.66f, W - 80, 60), Loc.Get("ui.controls"), small, Art.Hex("#ced4da"));
-                        Shadow(new Rect(0, H * 0.78f, W, 30), Loc.Get("ui.lang"), small, Art.Hex("#90e0ef"));
+                        Shadow(new Rect(40, H * 0.64f, W - 80, 60), Loc.Get("ui.controls"), small, Art.Hex("#ced4da"));
+                        Shadow(new Rect(0, H * 0.74f, W, 30), Loc.Get("ui.lang"), small, Art.Hex("#90e0ef"));
+                        Shadow(new Rect(0, H * 0.79f, W, 30), Loc.Get("ui.style", StyleName()), small, Art.Hex("#90e0ef"));
                     }
                     Shadow(new Rect(0, H * 0.84f, W, 30), Loc.Get("ui.best", Best), small, Art.Hex("#ced4da"));
                     break;
@@ -319,6 +333,8 @@ namespace PMBrawler
                 Bar(r, boss.Hp.Current / boss.Hp.max, Art.Hex("#9d0208"));
             }
         }
+
+        static string StyleName() => Loc.Get(Art.Style == Art.ArtStyle.Pixel ? "ui.style.pixel" : "ui.style.hd");
 
         /// <summary>The text for a "press Enter" style prompt, reworded for touch screens.</summary>
         static string Prompt(string key) => Loc.Get(TouchControls.Active ? key + ".touch" : key);

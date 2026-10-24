@@ -1,10 +1,22 @@
 {
+ "style": "pixel",
+ "ppu": 32,
+ "wallPpu": 32,
+ "farPpu": 32,
+ "viewHeight": 9.5,
+ "pixelPerfect": true,
+ "propScale": 1.0,
+ "wallPropY": 7.6,
+ "curtainTop": 10.75,
+ "curtainX": 1.05,
+ "font": "PixelifySans",
  "characters": [
   {
    "name": "pm",
    "cellW": 64,
    "cellH": 72,
    "feet": 2,
+   "columns": 11,
    "frames": [
     "idle0",
     "idle1",
@@ -24,6 +36,7 @@
    "cellW": 64,
    "cellH": 72,
    "feet": 2,
+   "columns": 11,
    "frames": [
     "idle0",
     "idle1",
@@ -43,6 +56,7 @@
    "cellW": 64,
    "cellH": 72,
    "feet": 2,
+   "columns": 11,
    "frames": [
     "idle0",
     "idle1",
@@ -62,6 +76,7 @@
    "cellW": 64,
    "cellH": 72,
    "feet": 2,
+   "columns": 11,
    "frames": [
     "idle0",
     "idle1",
@@ -81,6 +96,7 @@
    "cellW": 64,
    "cellH": 72,
    "feet": 2,
+   "columns": 11,
    "frames": [
     "idle0",
     "idle1",
@@ -100,6 +116,7 @@
    "cellW": 88,
    "cellH": 92,
    "feet": 2,
+   "columns": 11,
    "frames": [
     "idle0",
     "idle1",
@@ -119,6 +136,7 @@
    "cellW": 128,
    "cellH": 96,
    "feet": 2,
+   "columns": 5,
    "frames": [
     "idle0",
     "idle1",
@@ -131,72 +149,85 @@
  "levels": [
   {
    "key": "level1",
-   "props": [
+   "floorProps": [
     "plant",
     "cooler",
     "cabinet",
-    "poster",
     "server",
-    "poster",
-    "whiteboard",
     "plant"
    ],
+   "wallProps": [
+    "poster",
+    "poster",
+    "whiteboard"
+   ],
+   "curtains": false,
    "ceiling": "#5a3a28"
   },
   {
    "key": "level2",
-   "props": [
-    "bugboard",
+   "floorProps": [
     "plant",
-    "poster",
     "cabinet",
     "cooler",
-    "poster",
-    "bugboard",
     "plant"
    ],
+   "wallProps": [
+    "bugboard",
+    "poster",
+    "poster",
+    "bugboard"
+   ],
+   "curtains": false,
    "ceiling": "#6a4228"
   },
   {
    "key": "level3",
-   "props": [
-    "whiteboard",
+   "floorProps": [
     "plant",
-    "poster",
     "flipchart",
     "cooler",
-    "poster",
-    "whiteboard",
     "plant"
    ],
+   "wallProps": [
+    "whiteboard",
+    "poster",
+    "poster",
+    "whiteboard"
+   ],
+   "curtains": false,
    "ceiling": "#3a2a40"
   },
   {
    "key": "level4",
-   "props": [
+   "floorProps": [
+    "globe"
+   ],
+   "wallProps": [
     "portrait",
-    "curtain",
     "portrait",
     "clock",
     "portrait",
-    "curtain",
-    "globe",
     "portrait"
    ],
+   "curtains": true,
    "ceiling": "#d0a040"
   },
   {
    "key": "level5",
-   "props": [
+   "floorProps": [
     "statue",
     "plant",
-    "portrait",
     "aquarium",
     "statue",
-    "portrait",
     "plant",
     "globe"
    ],
+   "wallProps": [
+    "portrait",
+    "portrait"
+   ],
+   "curtains": false,
    "ceiling": "#d8b040"
   }
  ]
