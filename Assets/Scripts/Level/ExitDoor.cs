@@ -15,10 +15,9 @@ namespace PMBrawler
             var go = new GameObject("Exit");
             go.transform.SetParent(parent, false);
             go.transform.position = bottomCenter;
-            Art.Shape("Frame", go.transform, new Vector2(0, 1.25f), new Vector2(1.6f, 2.6f), Art.Hex("#495057"), -2);
             var e = go.AddComponent<ExitDoor>();
-            e.door = Art.Shape("Door", go.transform, new Vector2(0, 1.2f), new Vector2(1.3f, 2.4f), Art.Hex("#c1121f"), -1);
-            e.label = Art.Text("", go.transform, new Vector2(0, 3.1f), 0.32f, Color.white, 40);
+            e.door = Art.Place("Door", go.transform, null, Vector2.zero, -1);
+            e.label = Art.OutlinedText("", go.transform, new Vector2(0, 3.4f), 0.32f, Color.white, 40);
             e.Refresh();
             return e;
         }
@@ -33,8 +32,9 @@ namespace PMBrawler
 
         public void Refresh()
         {
-            door.color = IsOpen ? Art.Hex("#52b788") : Art.Hex("#c1121f");
-            label.text = IsOpen ? Loc.Get("ui.exit") : Loc.Get("ui.exitLocked");
+            door.sprite = Art.Load(IsOpen ? "Items/door_open" : "Items/door_closed", new Vector2(0.5f, 0f));
+            label.color = IsOpen ? Art.Hex("#8ef0b0") : Art.Hex("#ffb0a0");
+            Fx.SetText(label, IsOpen ? Loc.Get("ui.exit") : Loc.Get("ui.exitLocked"));
         }
 
         void Update()

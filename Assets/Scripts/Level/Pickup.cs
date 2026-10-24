@@ -15,23 +15,10 @@ namespace PMBrawler
             var go = new GameObject("Pickup_" + kind);
             go.transform.SetParent(parent, false);
             go.transform.position = pos;
-            switch (kind)
-            {
-                case PickupKind.Coffee:
-                    Art.Shape("Cup", go.transform, Vector2.zero, new Vector2(0.45f, 0.55f), Color.white, 30);
-                    Art.Shape("Coffee", go.transform, new Vector2(0, 0.2f), new Vector2(0.38f, 0.1f), Art.Hex("#6f4518"), 31);
-                    Art.Shape("Handle", go.transform, new Vector2(0.28f, 0), new Vector2(0.15f, 0.25f), Color.white, 29, true);
-                    break;
-                case PickupKind.Gantt:
-                    Art.Shape("Sheet", go.transform, Vector2.zero, new Vector2(0.8f, 0.6f), Color.white, 30);
-                    for (int i = 0; i < 3; i++)
-                        Art.Shape("Bar", go.transform, new Vector2(-0.15f + i * 0.12f, 0.17f - i * 0.17f), new Vector2(0.35f, 0.1f), Art.Hex("#4ea8de"), 31);
-                    break;
-                case PickupKind.ScopeFreeze:
-                    Art.Shape("Ice", go.transform, Vector2.zero, new Vector2(0.65f, 0.65f), new Color(0.6f, 0.85f, 1f), 30, true);
-                    Art.Text("SCOPE\nFREEZE", go.transform, Vector2.zero, 0.15f, Art.Hex("#1d3557"), 32);
-                    break;
-            }
+            string art = kind switch { PickupKind.Coffee => "coffee", PickupKind.Gantt => "gantt", _ => "freeze" };
+            // a soft glow behind so pickups stand out from the busy backgrounds
+            Art.Shape("Glow", go.transform, Vector2.zero, Vector2.one * 0.9f, new Color(1f, 0.95f, 0.6f, 0.18f), 29, true);
+            Art.Place("Icon", go.transform, Art.Load("Items/" + art), Vector2.zero, 30);
             var p = go.AddComponent<Pickup>();
             p.kind = kind;
             p.basePos = pos;

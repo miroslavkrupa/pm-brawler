@@ -1,0 +1,203 @@
+{
+ "characters": [
+  {
+   "name": "pm",
+   "cellW": 64,
+   "cellH": 72,
+   "feet": 2,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "developer",
+   "cellW": 64,
+   "cellH": 72,
+   "feet": 2,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "tester",
+   "cellW": 64,
+   "cellH": 72,
+   "feet": 2,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "stakeholder",
+   "cellW": 64,
+   "cellH": 72,
+   "feet": 2,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "cfo",
+   "cellW": 64,
+   "cellH": 72,
+   "feet": 2,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "ceo",
+   "cellW": 88,
+   "cellH": 92,
+   "feet": 2,
+   "frames": [
+    "idle0",
+    "idle1",
+    "walk0",
+    "walk1",
+    "walk2",
+    "walk3",
+    "jump",
+    "fall",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  },
+  {
+   "name": "committee",
+   "cellW": 128,
+   "cellH": 96,
+   "feet": 2,
+   "frames": [
+    "idle0",
+    "idle1",
+    "atk0",
+    "atk1",
+    "hurt"
+   ]
+  }
+ ],
+ "levels": [
+  {
+   "key": "level1",
+   "props": [
+    "plant",
+    "cooler",
+    "cabinet",
+    "poster",
+    "server",
+    "poster",
+    "whiteboard",
+    "plant"
+   ],
+   "ceiling": "#5a3a28"
+  },
+  {
+   "key": "level2",
+   "props": [
+    "bugboard",
+    "plant",
+    "poster",
+    "cabinet",
+    "cooler",
+    "poster",
+    "bugboard",
+    "plant"
+   ],
+   "ceiling": "#6a4228"
+  },
+  {
+   "key": "level3",
+   "props": [
+    "whiteboard",
+    "plant",
+    "poster",
+    "flipchart",
+    "cooler",
+    "poster",
+    "whiteboard",
+    "plant"
+   ],
+   "ceiling": "#3a2a40"
+  },
+  {
+   "key": "level4",
+   "props": [
+    "portrait",
+    "curtain",
+    "portrait",
+    "clock",
+    "portrait",
+    "curtain",
+    "globe",
+    "portrait"
+   ],
+   "ceiling": "#d0a040"
+  },
+  {
+   "key": "level5",
+   "props": [
+    "statue",
+    "plant",
+    "portrait",
+    "aquarium",
+    "statue",
+    "portrait",
+    "plant",
+    "globe"
+   ],
+   "ceiling": "#d8b040"
+  }
+ ]
+}

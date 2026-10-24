@@ -108,13 +108,15 @@ namespace PMBrawler
             busy = false;
         }
 
-        /// <summary>Telegraph: squash the sprite so the player can react.</summary>
+        /// <summary>Telegraph: wind-up pose plus a squash so the player can react, then the strike pose.</summary>
         protected IEnumerator Windup(float seconds)
         {
             Move(0f);
-            Visual.localScale = new Vector3(Facing * 1.15f, 0.85f, 1f);
+            Pose("atk0", seconds);
+            Visual.localScale = new Vector3(Facing * 1.08f, 0.92f, 1f);
             yield return new WaitForSeconds(seconds);
             Visual.localScale = new Vector3(Facing, 1f, 1f);
+            Pose("atk1", 0.3f);
         }
 
         /// <summary>Walk, but don't step off a ledge.</summary>

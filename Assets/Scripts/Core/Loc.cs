@@ -53,7 +53,7 @@ namespace PMBrawler
             ["ui.score"] = ("Skóre: {0}", "Score: {0}"),
             ["ui.best"] = ("Rekord: {0}", "Best: {0}"),
             ["ui.remaining"] = ("Zbývá blokerů: {0}", "Blockers left: {0}"),
-            ["ui.exitOpen"] = ("Schváleno! Běž k východu →", "Signed off! Head to the exit →"),
+            ["ui.exitOpen"] = ("Schváleno! Běž k východu >>", "Signed off! Head to the exit >>"),
             ["ui.paused"] = ("PAUZA — porada se protáhla", "PAUSED — the meeting ran over"),
             ["ui.pausedSub"] = ("Esc = pokračovat   Tab = jazyk", "Esc = resume   Tab = language"),
             ["ui.gameover"] = ("PROJEKT ZRUŠEN", "PROJECT CANCELLED"),

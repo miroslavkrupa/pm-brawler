@@ -15,3 +15,7 @@
 .vscode/
 .idea/
 .DS_Store
+
+# art generator
+Tools/ArtGen/.venv/
+__pycache__/

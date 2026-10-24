@@ -19,9 +19,13 @@ namespace PMBrawler
             var go = new GameObject("Projectile");
             go.transform.position = pos;
             var label = Loc.Get(labelKey);
-            float w = Mathf.Max(0.6f, label.Length * 0.2f + 0.2f);
-            Art.Shape("Paper", go.transform, Vector2.zero, new Vector2(w, 0.4f), color, 60);
-            Art.Text(label, go.transform, Vector2.zero, 0.26f, Color.black, 61);
+            float w = Mathf.Max(0.8f, label.Length * 0.2f + 0.3f);
+            string art = labelKey switch { "proj.bug" => "bug", "proj.invite" => "invite", "proj.budget" => "budget", _ => "memo" };
+            // 9-sliced paper so it stretches to fit the label without smearing the pixel edges
+            var paper = Art.Place("Paper", go.transform, Art.Load("Items/paper_" + art, new Vector2(0.5f, 0.5f), true, new Vector4(4, 4, 4, 4)),
+                Vector2.zero, 60, SpriteDrawMode.Sliced, new Vector2(w, 0.5f));
+            paper.color = Color.Lerp(color, Color.white, 0.6f);
+            Art.Text(label, go.transform, Vector2.zero, 0.26f, Art.Hex("#2a1e2e"), 61);
             var p = go.AddComponent<Projectile>();
             p.velocity = velocity;
             p.gravity = gravity;

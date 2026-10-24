@@ -143,7 +143,7 @@ namespace PMBrawler
 
             var player = PlayerController.Create(built.playerStart, levelRoot);
             var cam = CameraFollow.Instance;
-            cam.GetComponent<Camera>().backgroundColor = def.background;
+            cam.GetComponent<Camera>().backgroundColor = built.ceiling;
             cam.target = player.transform;
             cam.SetBounds(built.width, 0f);
             cam.SnapTo(player.transform.position);
@@ -210,7 +210,7 @@ namespace PMBrawler
         void EnsureStyles()
         {
             if (big != null) return;
-            big = new GUIStyle(GUI.skin.label) { fontSize = 54, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, wordWrap = true };
+            big = new GUIStyle(GUI.skin.label) { font = Art.Font, fontSize = 54, fontStyle = FontStyle.Bold, alignment = TextAnchor.MiddleCenter, wordWrap = true };
             big.normal.textColor = Color.white; // tinted per label via GUI.color
             mid = new GUIStyle(big) { fontSize = 28 };
             small = new GUIStyle(big) { fontSize = 18, fontStyle = FontStyle.Normal };
