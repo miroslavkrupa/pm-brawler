@@ -16,11 +16,8 @@ namespace PMBrawler
             SetupBody(new Art.Look
             {
                 size = new Vector2(0.8f, 1.7f),
-                body = Art.Hex("#3d5a80"),
-                legs = Art.Hex("#293241"),
-                head = Art.Skin,
-                accent = Art.Hex("#1d2d44"),
-                accessory = "hoodie"
+                sheet = "developer",
+                speech = Art.Hex("#8ecae6")
             }, 45f, Team.Enemy);
             NameKey = "enemy.dev";
             quoteKey = "quote.dev";
@@ -70,7 +67,7 @@ namespace PMBrawler
             Move(0f);
             FaceTowards(P.transform.position);
             Say(Loc.Get("quote.dev.shield"), 1.6f);
-            shield = Art.Shape("Shield", Visual, new Vector2(0.6f, 0.1f), new Vector2(0.18f, 1.6f), new Color(0.6f, 0.85f, 1f, 0.8f), 10).gameObject;
+            shield = Art.Shape("Shield", Visual, new Vector2(0.6f, Height * 0.5f + 0.1f), new Vector2(0.18f, 1.6f), new Color(0.6f, 0.85f, 1f, 0.6f), 10).gameObject;
         }
 
         void DropShield()

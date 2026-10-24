@@ -19,11 +19,8 @@ namespace PMBrawler
             SetupBody(new Art.Look
             {
                 size = new Vector2(1.2f, 2.3f),
-                body = Art.Hex("#14213d"),
-                legs = Art.Hex("#000000"),
-                head = Art.Skin,
-                accent = Art.Hex("#fca311"),
-                accessory = "crown"
+                sheet = "ceo",
+                speech = Art.Hex("#fca311")
             }, 650f, Team.Enemy);
             NameKey = "enemy.ceo";
             quoteKey = "quote.ceo";

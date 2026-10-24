@@ -22,12 +22,20 @@ namespace PMBrawler
         public bool IsSlowed => slowTimer > 0f;
         public float SpeedMultiplier => (IsSlowed ? 0.5f : 1f) * (frozenTimer > 0f ? 0f : 1f);
         public bool IsFrozen => frozenTimer > 0f;
+        public Color SpeechColor { get; private set; } = Color.white;
 
         protected float stunTimer, slowTimer, frozenTimer;
         SpriteRenderer[] renderers;
         Color[] baseColors;
+        Material baseMaterial;
         float flashTimer;
         Vector2 size;
+
+        // animation
+        Art.CharacterSheet sheet;
+        SpriteRenderer body;
+        string pose;
+        float poseTimer, animClock;
 
         /// <summary>Call right after AddComponent to build the body.</summary>
         protected void SetupBody(Art.Look look, float maxHp, Team team)
@@ -50,11 +58,16 @@ namespace PMBrawler
             Hp.Damaged += OnDamaged;
             Hp.Died += OnDied;
 
+            // the visual sits at the feet so squash & stretch keeps them on the ground
             Visual = new GameObject("Visual").transform;
             Visual.SetParent(transform, false);
-            renderers = Art.BuildCharacter(Visual, look);
+            Visual.localPosition = new Vector3(0f, -look.size.y / 2f, 0f);
+            renderers = Art.BuildCharacter(Visual, look, out sheet);
+            body = renderers.Length > 0 ? renderers[0] : null;
+            baseMaterial = body ? body.sharedMaterial : null;
             baseColors = new Color[renderers.Length];
             for (int i = 0; i < renderers.Length; i++) baseColors[i] = renderers[i].color;
+            if (look.speech.a > 0f) SpeechColor = look.speech;
 
             IgnoreOtherFighters();
             All.Add(this);
@@ -103,6 +116,39 @@ namespace PMBrawler
             else if (IsFrozen) Tint(new Color(0.6f, 0.85f, 1f));
             else if (Hp.invulnerable || IsStunned) Blink();
             else RestoreColors();
+
+            Animate(dt);
+        }
+
+        /// <summary>Hold an animation frame (e.g. "atk0", "atk1", "hurt", "jump") for a while, overriding the automatic one.</summary>
+        public void Pose(string frame, float seconds)
+        {
+            pose = frame;
+            poseTimer = seconds;
+        }
+
+        void Animate(float dt)
+        {
+            if (sheet == null || body == null) return;
+            if (poseTimer > 0f) poseTimer -= dt;
+            if (!IsFrozen) animClock += dt;
+
+            string frame;
+            float vx = Rb ? Rb.linearVelocity.x : 0f, vy = Rb ? Rb.linearVelocity.y : 0f;
+            if (Hp.IsDead) frame = "hurt";
+            else if (poseTimer > 0f) frame = pose;
+            else if (IsStunned && !IsFrozen) frame = "hurt";
+            else if (!Grounded) frame = vy > 0f ? "jump" : "fall";
+            else if (Mathf.Abs(vx) > 0.4f)
+            {
+                // step rate follows the speed so feet don't skate
+                int step = (int)(animClock * Mathf.Clamp(Mathf.Abs(vx) * 1.6f, 5f, 16f)) % 4;
+                frame = "walk" + step;
+            }
+            else frame = (int)(animClock * 1.6f) % 2 == 0 ? "idle0" : "idle1";
+
+            var s = sheet.Get(frame);
+            if (s && body.sprite != s) body.sprite = s;
         }
 
         bool CheckGround()
@@ -164,6 +210,7 @@ namespace PMBrawler
         {
             flashTimer = time;
             Tint(Color.white);
+            if (sheet != null) foreach (var r in renderers) if (r) r.sharedMaterial = Art.FlashMaterial;
         }
 
         void Tint(Color c)
@@ -181,7 +228,11 @@ namespace PMBrawler
         void RestoreColors()
         {
             for (int i = 0; i < renderers.Length; i++)
-                if (renderers[i]) renderers[i].color = baseColors[i];
+                if (renderers[i])
+                {
+                    renderers[i].color = baseColors[i];
+                    if (baseMaterial) renderers[i].sharedMaterial = baseMaterial;
+                }
         }
     }
 }

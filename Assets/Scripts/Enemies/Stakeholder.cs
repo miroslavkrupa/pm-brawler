@@ -11,11 +11,8 @@ namespace PMBrawler
             SetupBody(new Art.Look
             {
                 size = new Vector2(1f, 1.8f),
-                body = Art.Hex("#9d4edd"),
-                legs = Art.Hex("#3c096c"),
-                head = Art.Skin,
-                accent = Art.Hex("#ffd60a"),
-                accessory = "suit"
+                sheet = "stakeholder",
+                speech = Art.Hex("#e0aaff")
             }, 60f, Team.Enemy);
             NameKey = "enemy.stake";
             quoteKey = "quote.stake";

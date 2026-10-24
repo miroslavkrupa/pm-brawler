@@ -14,18 +14,43 @@ namespace PMBrawler
         Camera cam;
         float shakeTime, shakeStrength;
         Vector3 basePos;
+        int screenHeight;
+        float levelWidth = -1f, levelBottom;
+        float pixel = 1f / Art.PPU;   // one screen pixel in world units
 
         void Awake()
         {
             Instance = this;
             cam = GetComponent<Camera>();
             cam.orthographic = true;
-            cam.orthographicSize = 6.5f;
+            UpdateZoom();
             basePos = transform.position;
+        }
+
+        /// <summary>
+        /// Pick a zoom where every art pixel covers a whole number of screen pixels, so the dithering
+        /// stays crisp. Falls back to the design zoom on small windows.
+        /// </summary>
+        void UpdateZoom()
+        {
+            screenHeight = Screen.height;
+            const float designHeight = 13f * Art.PPU; // 13 units visible
+            int scale = Mathf.Max(1, Mathf.RoundToInt(screenHeight / designHeight));
+            float size = screenHeight / (2f * Art.PPU * scale);
+            if (size > 8f || size < 5f)
+            {
+                size = 6.5f;
+                pixel = 0f;
+            }
+            else pixel = 1f / (Art.PPU * scale);
+            cam.orthographicSize = size;
+            if (levelWidth >= 0f) SetBounds(levelWidth, levelBottom);
         }
 
         public void SetBounds(float levelWidth, float levelBottom)
         {
+            this.levelWidth = levelWidth;
+            this.levelBottom = levelBottom;
             float halfW = cam.orthographicSize * cam.aspect;
             minX = halfW - 0.5f;
             maxX = Mathf.Max(minX, levelWidth - halfW - 0.5f);
@@ -54,6 +79,7 @@ namespace PMBrawler
 
         void LateUpdate()
         {
+            if (Screen.height != screenHeight) UpdateZoom();
             if (target)
             {
                 float facing = target.TryGetComponent<Fighter>(out var f) ? f.Facing : 1f;
@@ -68,7 +94,14 @@ namespace PMBrawler
                 offset = (Vector3)(Random.insideUnitCircle * shakeStrength);
                 if (shakeTime <= 0f) shakeStrength = 0f;
             }
-            transform.position = basePos + offset;
+            var pos = basePos + offset;
+            if (pixel > 0f)
+            {
+                // snap to the screen pixel grid so sprites don't shimmer
+                pos.x = Mathf.Round(pos.x / pixel) * pixel;
+                pos.y = Mathf.Round(pos.y / pixel) * pixel;
+            }
+            transform.position = pos;
         }
     }
 }

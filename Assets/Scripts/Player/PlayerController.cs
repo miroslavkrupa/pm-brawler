@@ -32,11 +32,8 @@ namespace PMBrawler
             p.SetupBody(new Art.Look
             {
                 size = new Vector2(0.8f, 1.8f),
-                body = Color.white,
-                legs = Art.Hex("#2b3a67"),
-                head = Art.Skin,
-                accent = Art.Hex("#d62828"),
-                accessory = "tie"
+                sheet = "pm",
+                speech = Art.Hex("#ffffff")
             }, 100f, Team.Player);
             p.Hp.invulnerableAfterHit = 0.8f;
             p.SpawnPoint = pos;
@@ -113,6 +110,7 @@ namespace PMBrawler
             bool finisher = comboStep == 3;
             attackLock = finisher ? 0.35f : 0.18f;
             Rb.linearVelocity = new Vector2(Facing * (finisher ? 4f : 2f), Rb.linearVelocity.y); // small lunge
+            Pose(comboStep == 2 ? "atk0" : "atk1", attackLock + 0.06f);
             Swing(new Vector2(0.9f, 0.1f), new Vector2(1.3f, finisher ? 1.2f : 0.5f), finisher ? Art.Hex("#ffd23f") : Art.Hex("#a0784a"));
             Landed(MeleeHit(new Vector2(0.95f, 0f), new Vector2(1.4f, 1.4f), new DamageInfo
             {
@@ -125,6 +123,7 @@ namespace PMBrawler
         void AirAttack()
         {
             attackLock = 0.25f;
+            Pose("atk1", attackLock);
             Swing(new Vector2(0.6f, -0.5f), new Vector2(1.2f, 0.9f), Art.Hex("#a0784a"));
             Landed(MeleeHit(new Vector2(0.6f, -0.4f), new Vector2(1.5f, 1.5f), new DamageInfo
             {
@@ -138,11 +137,13 @@ namespace PMBrawler
         {
             attackLock = 0.7f;
             Fx.Say(transform, Loc.Get("pm.heavy"), Height * 0.5f + 0.7f, 1f);
-            Visual.localScale = new Vector3(Facing * 1.15f, 0.85f, 1f); // wind up
+            Visual.localScale = new Vector3(Facing * 1.1f, 0.9f, 1f); // wind up
+            Pose("atk0", 0.25f);
             yield return new WaitForSeconds(0.25f);
             if (dead) yield break;
             Visual.localScale = new Vector3(Facing, 1f, 1f);
             if (IsStunned) yield break;
+            Pose("atk1", 0.4f);
             Swing(new Vector2(1.1f, 0f), new Vector2(2f, 1.6f), Art.Hex("#4ea8de"));
             Fx.Shake(0.2f, 0.15f);
             Landed(MeleeHit(new Vector2(1.1f, 0f), new Vector2(2.2f, 1.8f), new DamageInfo
@@ -163,6 +164,7 @@ namespace PMBrawler
             }
             Energy -= SpecialCost;
             attackLock = 0.4f;
+            Pose("jump", 0.5f); // arms in the air
             Fx.Say(transform, Loc.Get("pm.special"), Height * 0.5f + 0.7f, 1.8f);
             Fx.Shake(0.25f, 0.25f);
             Fx.Burst(Center, Art.Hex("#4ea8de"), 24);
@@ -184,10 +186,15 @@ namespace PMBrawler
             Fx.Shake(0.08f, 0.08f);
         }
 
+        /// <summary>A crescent smear in front of the PM, sized to the hitbox.</summary>
         void Swing(Vector2 offset, Vector2 size, Color color)
         {
-            var sr = Art.Shape("Swing", transform, new Vector2(offset.x * Facing, offset.y), size, new Color(color.r, color.g, color.b, 0.6f), 20);
-            Destroy(sr.gameObject, 0.08f);
+            var smear = Art.Load("Fx/smear");
+            var sr = Art.Place("Swing", transform, smear, new Vector2(offset.x * Facing, offset.y), 20);
+            float w = smear ? smear.bounds.size.x : 1f;
+            sr.transform.localScale = new Vector3(Facing * size.x / w * 1.1f, size.y / w * 1.3f, 1f);
+            sr.color = Color.Lerp(color, Color.white, 0.5f);
+            Destroy(sr.gameObject, 0.09f);
         }
 
         bool TryDropThrough()
