@@ -61,6 +61,7 @@ namespace PMBrawler
         void Update()
         {
             if (GameInput.LanguagePressed) Loc.Toggle();
+            if (GameInput.FullscreenPressed) Screen.fullScreen = !Screen.fullScreen;
             if (Loc.Current != lastLang)
             {
                 lastLang = Loc.Current;
