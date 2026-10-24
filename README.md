@@ -86,5 +86,13 @@ Talk text uses the Pixelify Sans font (SIL Open Font License, `Assets/Resources/
 
 ## Publishing on the web
 
-**PM Brawler → Build WebGL** writes an uncompressed build to `Builds/WebGL`. Upload the contents of that
-folder to GitHub Pages (or any static host), the same way as the hybrid project game.
+The game is playable at **https://miroslavkrupa.github.io/pm-brawler/**, served by GitHub Pages from the
+`gh-pages` branch. To publish a new version, close the project in Unity and run:
+
+```
+Tools/publish_web.sh            # build WebGL, then push it to gh-pages
+Tools/publish_web.sh --no-build # push the existing Builds/WebGL
+```
+
+The site updates a minute or two after the push. **PM Brawler → Build WebGL** in the editor makes the same
+uncompressed build in `Builds/WebGL`; it works on any static host.
