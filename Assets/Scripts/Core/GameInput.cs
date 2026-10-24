@@ -35,6 +35,7 @@ namespace PMBrawler
         public static bool ConfirmPressed => K != null && (K.enterKey.wasPressedThisFrame || K.numpadEnterKey.wasPressedThisFrame);
         public static bool PausePressed => K != null && (K.escapeKey.wasPressedThisFrame || K.pKey.wasPressedThisFrame);
         public static bool LanguagePressed => K != null && K.tabKey.wasPressedThisFrame;
+        public static bool FullscreenPressed => K != null && K.fKey.wasPressedThisFrame;
 #else
         public static float Horizontal
         {
@@ -56,6 +57,7 @@ namespace PMBrawler
         public static bool ConfirmPressed => Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter);
         public static bool PausePressed => Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.P);
         public static bool LanguagePressed => Input.GetKeyDown(KeyCode.Tab);
+        public static bool FullscreenPressed => Input.GetKeyDown(KeyCode.F);
 #endif
     }
 }

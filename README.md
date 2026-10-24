@@ -28,6 +28,7 @@ characters and HUD from code, using the pixel art in `Assets/Resources/Art`.
 | "Let's take this offline" (stuns everyone nearby, costs 50 caffeine) | L or V |
 | Pause | Esc or P |
 | Language CZ/EN | Tab |
+| Fullscreen on/off | F |
 
 ## The cast
 

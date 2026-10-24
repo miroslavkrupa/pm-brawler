@@ -44,8 +44,8 @@ namespace PMBrawler
             ["ui.subtitle"] = ("Doruč projekt. Přežij stakeholdery.", "Deliver the project. Survive the stakeholders."),
             ["ui.pressStart"] = ("Stiskni ENTER pro start", "Press ENTER to start"),
             ["ui.controls"] = (
-                "Pohyb: A/D nebo šipky   Skok: mezerník/W   Útok: J   Ganttův úder: K   Proberme to mimo poradu: L   Pauza: Esc",
-                "Move: A/D or arrows   Jump: Space/W   Attack: J   Gantt slam: K   Let's take this offline: L   Pause: Esc"),
+                "Pohyb: A/D nebo šipky   Skok: mezerník/W   Útok: J   Ganttův úder: K   Proberme to mimo poradu: L   Pauza: Esc   Celá obrazovka: F",
+                "Move: A/D or arrows   Jump: Space/W   Attack: J   Gantt slam: K   Let's take this offline: L   Pause: Esc   Fullscreen: F"),
             ["ui.lang"] = ("Jazyk: čeština  [Tab = English]", "Language: English  [Tab = čeština]"),
             ["ui.hp"] = ("Zdraví", "Health"),
             ["ui.energy"] = ("Kofein", "Caffeine"),
