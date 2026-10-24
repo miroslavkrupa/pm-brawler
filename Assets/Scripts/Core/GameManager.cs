@@ -85,7 +85,8 @@ namespace PMBrawler
                     break;
 
                 case GameState.Playing:
-                    if (GameInput.PausePressed) { State = GameState.Paused; Time.timeScale = 0f; break; }
+                    // pause on Esc, or when a phone is turned upright
+                    if (GameInput.PausePressed || TouchControls.Portrait) { State = GameState.Paused; Time.timeScale = 0f; break; }
                     if (exit && !exit.IsOpen && RemainingEnemies() == 0)
                     {
                         exit.Open();
@@ -233,9 +234,13 @@ namespace PMBrawler
                     Shadow(new Rect(0, H * 0.22f, W, 80), Loc.Get("ui.title"), big, Art.Hex("#ffd23f"));
                     Shadow(new Rect(0, H * 0.22f + 80, W, 40), Loc.Get("ui.subtitle"), mid, Color.white);
                     if (Mathf.Repeat(Time.unscaledTime, 1f) < 0.7f)
-                        Shadow(new Rect(0, H * 0.52f, W, 40), Loc.Get("ui.pressStart"), mid, Color.white);
-                    Shadow(new Rect(40, H * 0.66f, W - 80, 60), Loc.Get("ui.controls"), small, Art.Hex("#ced4da"));
-                    Shadow(new Rect(0, H * 0.78f, W, 30), Loc.Get("ui.lang"), small, Art.Hex("#90e0ef"));
+                        Shadow(new Rect(0, H * 0.52f, W, 40), Prompt("ui.pressStart"), mid, Color.white);
+                    if (!TouchControls.Active)
+                    {
+                        // keyboard help; on touch screens the buttons speak for themselves
+                        Shadow(new Rect(40, H * 0.66f, W - 80, 60), Loc.Get("ui.controls"), small, Art.Hex("#ced4da"));
+                        Shadow(new Rect(0, H * 0.78f, W, 30), Loc.Get("ui.lang"), small, Art.Hex("#90e0ef"));
+                    }
                     Shadow(new Rect(0, H * 0.84f, W, 30), Loc.Get("ui.best", Best), small, Art.Hex("#ced4da"));
                     break;
 
@@ -249,21 +254,21 @@ namespace PMBrawler
                 case GameState.Paused:
                     Dim(W, H, 0.5f);
                     Shadow(new Rect(0, H * 0.4f, W, 70), Loc.Get("ui.paused"), big, Color.white);
-                    Shadow(new Rect(0, H * 0.4f + 75, W, 40), Loc.Get("ui.pausedSub"), small, Color.white);
+                    Shadow(new Rect(0, H * 0.4f + 75, W, 40), Prompt("ui.pausedSub"), small, Color.white);
                     break;
 
                 case GameState.LevelComplete:
                     Dim(W, H, 0.5f);
                     Shadow(new Rect(0, H * 0.38f, W, 70), Loc.Get("ui.levelComplete"), big, Art.Hex("#52b788"));
                     Shadow(new Rect(0, H * 0.38f + 75, W, 40), Loc.Get("ui.score", Score), mid, Color.white);
-                    Shadow(new Rect(0, H * 0.38f + 125, W, 40), Loc.Get("ui.continue"), small, Color.white);
+                    Shadow(new Rect(0, H * 0.38f + 125, W, 40), Prompt("ui.continue"), small, Color.white);
                     break;
 
                 case GameState.GameOver:
                     Dim(W, H, 0.6f);
                     Shadow(new Rect(0, H * 0.38f, W, 70), Loc.Get("ui.gameover"), big, Art.Hex("#ff6b6b"));
                     Shadow(new Rect(0, H * 0.38f + 75, W, 40), Loc.Get("ui.score", Score), mid, Color.white);
-                    Shadow(new Rect(0, H * 0.38f + 125, W, 40), Loc.Get("ui.gameoverSub"), small, Color.white);
+                    Shadow(new Rect(0, H * 0.38f + 125, W, 40), Prompt("ui.gameoverSub"), small, Color.white);
                     break;
 
                 case GameState.Victory:
@@ -271,7 +276,7 @@ namespace PMBrawler
                     Shadow(new Rect(0, H * 0.3f, W, 70), Loc.Get("ui.victory"), big, Art.Hex("#ffd23f"));
                     Shadow(new Rect(0, H * 0.3f + 75, W, 40), Loc.Get("ui.victorySub"), mid, Color.white);
                     Shadow(new Rect(0, H * 0.3f + 130, W, 40), Loc.Get("ui.score", Score) + "    " + Loc.Get("ui.best", Best), mid, Color.white);
-                    Shadow(new Rect(0, H * 0.3f + 190, W, 40), Loc.Get("ui.victoryHint"), small, Color.white);
+                    Shadow(new Rect(0, H * 0.3f + 190, W, 40), Prompt("ui.victoryHint"), small, Color.white);
                     break;
             }
         }
@@ -307,12 +312,16 @@ namespace PMBrawler
             var boss = ActiveBoss();
             if (boss)
             {
-                float bw = Mathf.Min(600f, W - 80f);
-                var r = new Rect((W - bw) / 2f, RefHeight - 60, bw, 18);
+                // with touch buttons along the bottom the boss bar moves up under the top buttons
+                float bw = TouchControls.Active ? Mathf.Clamp(W - 760f, 240f, 600f) : Mathf.Min(600f, W - 80f);
+                var r = new Rect((W - bw) / 2f, TouchControls.Active ? 118f : RefHeight - 60, bw, 18);
                 Shadow(new Rect(r.x, r.y - 26, bw, 24), Loc.Get(boss.NameKey), new GUIStyle(small) { fontStyle = FontStyle.Bold }, Color.white);
                 Bar(r, boss.Hp.Current / boss.Hp.max, Art.Hex("#9d0208"));
             }
         }
+
+        /// <summary>The text for a "press Enter" style prompt, reworded for touch screens.</summary>
+        static string Prompt(string key) => Loc.Get(TouchControls.Active ? key + ".touch" : key);
 
         static void Fill(Rect r, Color c) =>
             GUI.DrawTexture(r, Texture2D.whiteTexture, ScaleMode.StretchToFill, false, 0f, c, 0f, 0f);
