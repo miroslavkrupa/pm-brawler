@@ -11,7 +11,7 @@ namespace PMBrawler
     [DefaultExecutionOrder(-100)] // read the touches before anything asks GameInput
     public class TouchControls : MonoBehaviour
     {
-        enum B { Left, Right, Down, Jump, Attack, Heavy, Special, Pause, Fullscreen, Lang }
+        enum B { Left, Right, Down, Jump, Attack, Heavy, Special, Pause, Fullscreen, Lang, Style }
 
         public static bool Active { get; private set; }
 
@@ -25,6 +25,7 @@ namespace PMBrawler
         public static bool PausePressed => Pressed(B.Pause);
         public static bool FullscreenPressed => Pressed(B.Fullscreen);
         public static bool LanguagePressed => Pressed(B.Lang);
+        public static bool StylePressed => Pressed(B.Style);
         /// <summary>A tap anywhere that isn't on a button: "press Enter" on menus.</summary>
         public static bool TapPressed { get; private set; }
 
@@ -75,10 +76,11 @@ namespace PMBrawler
 
             // small buttons along the top centre, clear of the HUD in the corners
             float s = 64f;
-            float x0 = W / 2f - (s * 3f + gap * 2f) / 2f;
+            float x0 = W / 2f - (s * 4f + gap * 3f) / 2f;
             rects[B.Pause] = new Rect(x0, 12f, s, s);
             rects[B.Fullscreen] = new Rect(x0 + s + gap, 12f, s, s);
             rects[B.Lang] = new Rect(x0 + 2f * (s + gap), 12f, s, s);
+            rects[B.Style] = new Rect(x0 + 3f * (s + gap), 12f, s, s);
         }
 
         void Update()
@@ -117,7 +119,7 @@ namespace PMBrawler
         /// <summary>Gameplay buttons only show while playing; menus are a tap anywhere.</summary>
         static bool Visible(B b)
         {
-            if (b == B.Fullscreen || b == B.Lang) return true;
+            if (b == B.Fullscreen || b == B.Lang || b == B.Style) return true;
             var gm = GameManager.Instance;
             return gm != null && (gm.State == GameState.Playing || gm.State == GameState.Paused);
         }
@@ -157,6 +159,7 @@ namespace PMBrawler
             }
             Button(B.Fullscreen, rects[B.Fullscreen], null, "[ ]");
             Button(B.Lang, rects[B.Lang], null, Loc.Current == Lang.CS ? "EN" : "CZ");
+            Button(B.Style, rects[B.Style], null, "ART");
         }
 
         // ------------------------------------------------------------------ drawing
@@ -189,7 +192,8 @@ namespace PMBrawler
 
         static void Label(Rect r, string text, float size, Color color)
         {
-            style ??= new GUIStyle(GUI.skin.label) { font = Art.Font, alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, wordWrap = true };
+            style ??= new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, wordWrap = true };
+            style.font = Art.Font; // follows the art style
             style.fontSize = Mathf.RoundToInt(size);
             var prev = GUI.color;
             GUI.color = new Color(0f, 0f, 0f, color.a * 0.7f);

@@ -18,8 +18,6 @@ namespace PMBrawler
             "Q3 OKRs", "SYNERGY\n+200%", "DEADLINE:\nFRIDAY", "AGILE!!!", "BUDGET: 0", "KPI", "ROADMAP\nv17", "SPRINT 47", "ROI?"
         };
 
-        static readonly string[] WallProps = { "poster", "portrait", "bugboard", "whiteboard", "clock" };
-
         const float Segment = 8f;      // one wall tile = one window, 8 units wide
         const float WallHeight = 14f;
         const float FarParallax = 0.8f;
@@ -138,8 +136,9 @@ namespace PMBrawler
 
             var wall = Art.Load($"Levels/{def.key}/wall", Vector2.zero);
             var rnd = new System.Random(def.key.GetHashCode());
-            string[] props = info?.props ?? new string[0];
-            int propIndex = 0;
+            string[] wallProps = info?.wallProps ?? new string[0];
+            string[] floorProps = info?.floorProps ?? new string[0];
+            int wallIndex = 0, floorIndex = 0;
             for (int k = -3; k * Segment < width + 24f; k++)
             {
                 float x0 = k * Segment;
@@ -147,37 +146,35 @@ namespace PMBrawler
                 if (k < 0 || x0 + Segment > width + 4) continue;
 
                 // curtains frame every window in the posh rooms
-                if (System.Array.IndexOf(props, "curtain") >= 0)
+                if (info != null && info.curtains)
                 {
                     var curtain = Art.Load($"Levels/{def.key}/curtain", new Vector2(0.5f, 1f));
-                    Art.Place("Curtain", decor, curtain, new Vector2(x0 + 1.05f, wallBottom + 10.75f), -18);
-                    Art.Place("Curtain", decor, curtain, new Vector2(x0 + Segment - 1.05f, wallBottom + 10.75f), -18).flipX = true;
+                    float cx = Art.CurtainX, top = wallBottom + Art.CurtainTop;
+                    Art.Place("Curtain", decor, curtain, new Vector2(x0 + cx, top), -18);
+                    Art.Place("Curtain", decor, curtain, new Vector2(x0 + Segment - cx, top), -18).flipX = true;
                 }
 
-                if (props.Length == 0) continue;
-                // one wall prop in the gap between windows and maybe one standing prop under the window
-                for (int tries = 0; tries < props.Length; tries++)
+                // one prop on the wall between the windows...
+                if (k > 0 && wallProps.Length > 0)
                 {
-                    string p = props[propIndex++ % props.Length];
-                    if (p == "curtain") continue;
-                    bool onWall = System.Array.IndexOf(WallProps, p) >= 0;
-                    if (onWall)
+                    string p = wallProps[wallIndex++ % wallProps.Length];
+                    var sr = Art.Place(p, decor, Art.Load($"Levels/{def.key}/{p}"), new Vector2(x0, wallBottom + Art.WallPropY), -20);
+                    if (p == "poster") // the pixel posters are blank; the hand-drawn ones have their own text
+                        Art.Text(Posters[rnd.Next(Posters.Length)], sr.transform, new Vector2(0, -0.02f), 0.26f,
+                            Art.Hex("#3a2a30"), -19);
+                }
+
+                // ...and usually one standing on the floor under the window
+                if (floorProps.Length > 0)
+                {
+                    string p = floorProps[floorIndex++ % floorProps.Length];
+                    float px = x0 + Segment * 0.5f + (float)(rnd.NextDouble() - 0.5) * 3f;
+                    float ground = SurfaceAt(def, Mathf.FloorToInt(px));
+                    if (ground >= 0f && rnd.NextDouble() >= 0.3)
                     {
-                        if (k == 0) continue;
-                        var pos = new Vector2(x0, wallBottom + 7.6f);
-                        var sr = Art.Place(p, decor, Art.Load($"Levels/{def.key}/{p}"), pos, -20);
-                        if (p == "poster")
-                            Art.Text(Posters[rnd.Next(Posters.Length)], sr.transform, new Vector2(0, -0.02f), 0.26f,
-                                Art.Hex("#3a2a30"), -19);
+                        var sr = Art.Place(p, decor, Art.Load($"Levels/{def.key}/{p}", new Vector2(0.5f, 0f)), new Vector2(px, ground - 0.06f), -10);
+                        sr.transform.localScale = Vector3.one * Art.PropScale;
                     }
-                    else
-                    {
-                        float px = x0 + Segment * 0.5f + (float)(rnd.NextDouble() - 0.5) * 3f;
-                        float ground = SurfaceAt(def, Mathf.FloorToInt(px));
-                        if (ground < 0f || rnd.NextDouble() < 0.35) break;
-                        Art.Place(p, decor, Art.Load($"Levels/{def.key}/{p}", new Vector2(0.5f, 0f)), new Vector2(px, ground - 0.06f), -10);
-                    }
-                    break;
                 }
             }
 

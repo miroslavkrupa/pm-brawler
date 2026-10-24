@@ -15,6 +15,8 @@ from characters import CAST, COMMITTEE_FRAMES, FRAMES, committee_sheet, sheet  #
 from environment import THEMES, door, floor_tiles, panorama, paper, pickups, prop, smear, spark, wall_tile  # noqa: E402
 from pixel import strip  # noqa: E402
 
+WALL_PROPS = ('poster', 'portrait', 'bugboard', 'whiteboard', 'clock')
+
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', 'Assets', 'Resources', 'Art'))
 
 
@@ -25,15 +27,18 @@ def save(img, rel):
 
 
 def main():
-    manifest = {'characters': [], 'levels': []}
+    # scale, camera and room geometry of this style (the hand-drawn style in Tools/ArtGenHD has its own)
+    manifest = {'style': 'pixel', 'ppu': 32, 'wallPpu': 32, 'farPpu': 32, 'viewHeight': 9.5, 'pixelPerfect': True,
+                'propScale': 1.0, 'wallPropY': 7.6, 'curtainTop': 10.75, 'curtainX': 1.05, 'font': 'PixelifySans',
+                'characters': [], 'levels': []}
 
     for name, spec in CAST.items():
         save(strip(sheet(spec)), f'Characters/{name}.png')
         manifest['characters'].append({'name': name, 'cellW': spec.cell[0], 'cellH': spec.cell[1], 'feet': 2,
-                                       'frames': FRAMES})
+                                       'columns': len(FRAMES), 'frames': FRAMES})
     save(strip(committee_sheet()), 'Characters/committee.png')
     manifest['characters'].append({'name': 'committee', 'cellW': 128, 'cellH': 96, 'feet': 2,
-                                   'frames': COMMITTEE_FRAMES})
+                                   'columns': len(COMMITTEE_FRAMES), 'frames': COMMITTEE_FRAMES})
 
     for key, th in THEMES.items():
         save(panorama(key), f'Levels/{key}/far.png')
@@ -44,7 +49,10 @@ def main():
         save(desk, f'Levels/{key}/desk.png')
         for p in sorted(set(th['props'])):
             save(prop(p, key), f'Levels/{key}/{p}.png')
-        manifest['levels'].append({'key': key, 'props': th['props'], 'ceiling': th['trim']})
+        wall_props = [p for p in th['props'] if p in WALL_PROPS]
+        floor_props = [p for p in th['props'] if p not in WALL_PROPS and p != 'curtain']
+        manifest['levels'].append({'key': key, 'floorProps': floor_props, 'wallProps': wall_props,
+                                   'curtains': 'curtain' in th['props'], 'ceiling': th['trim']})
 
     for name, img in pickups().items():
         save(img, f'Items/{name}.png')

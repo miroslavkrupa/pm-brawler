@@ -16,7 +16,7 @@ namespace PMBrawler
         Vector3 basePos;
         int screenHeight;
         float levelWidth = -1f, levelBottom;
-        float pixel = 1f / Art.PPU;   // one screen pixel in world units
+        float pixel;   // one screen pixel in world units when snapping, 0 = no snapping
 
         void Awake()
         {
@@ -27,20 +27,27 @@ namespace PMBrawler
             basePos = transform.position;
         }
 
-        const float ViewHeight = 9.5f; // world units visible vertically (characters are ~1.8 tall)
-
         /// <summary>
-        /// Pick a zoom close to <see cref="ViewHeight"/> where every art pixel covers a whole number of
-        /// screen pixels, so the dithering stays crisp. Falls back to the exact zoom on small windows.
+        /// Zoom so about <see cref="Art.ViewHeight"/> world units are visible. For pixel art, snap to a zoom
+        /// where every art pixel covers a whole number of screen pixels so the dithering stays crisp (falling
+        /// back to the exact zoom on small windows). Call again after switching art styles.
         /// </summary>
-        void UpdateZoom()
+        public void UpdateZoom()
         {
             screenHeight = Screen.height;
-            int scale = Mathf.Max(1, Mathf.RoundToInt(screenHeight / (ViewHeight * Art.PPU)));
-            float size = screenHeight / (2f * Art.PPU * scale);
-            if (size > ViewHeight * 0.65f || size < ViewHeight * 0.4f)
+            float view = Art.ViewHeight;
+            if (!Art.PixelPerfect)
             {
-                size = ViewHeight / 2f;
+                cam.orthographicSize = view / 2f;
+                pixel = 0f;
+                if (levelWidth >= 0f) SetBounds(levelWidth, levelBottom);
+                return;
+            }
+            int scale = Mathf.Max(1, Mathf.RoundToInt(screenHeight / (view * Art.PPU)));
+            float size = screenHeight / (2f * Art.PPU * scale);
+            if (size > view * 0.65f || size < view * 0.4f)
+            {
+                size = view / 2f;
                 pixel = 0f;
             }
             else pixel = 1f / (Art.PPU * scale);

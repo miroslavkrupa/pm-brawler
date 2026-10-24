@@ -22,7 +22,7 @@ namespace PMBrawler
             float w = Mathf.Max(0.8f, label.Length * 0.2f + 0.3f);
             string art = labelKey switch { "proj.bug" => "bug", "proj.invite" => "invite", "proj.budget" => "budget", _ => "memo" };
             // 9-sliced paper so it stretches to fit the label without smearing the pixel edges
-            var paper = Art.Place("Paper", go.transform, Art.Load("Items/paper_" + art, new Vector2(0.5f, 0.5f), true, new Vector4(4, 4, 4, 4)),
+            var paper = Art.Place("Paper", go.transform, Art.Load("Items/paper_" + art, new Vector2(0.5f, 0.5f), true, 0.12f),
                 Vector2.zero, 60, SpriteDrawMode.Sliced, new Vector2(w, 0.5f));
             paper.color = Color.Lerp(color, Color.white, 0.6f);
             Art.Text(label, go.transform, Vector2.zero, 0.26f, Art.Hex("#2a1e2e"), 61);
